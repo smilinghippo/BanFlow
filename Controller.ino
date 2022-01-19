@@ -35,6 +35,7 @@ void setup() {
     my_instrument.RegisterCommand(F(":MFC4"), &Set4); 
     my_instrument.RegisterCommand(F(":MFC5"), &Set5); 
     my_instrument.RegisterCommand(F(":MFC6"), &Set6); 
+  my_instrument.RegisterCommand(F("MEASureflow"), &Measure);
   
   Serial.begin(9600);
 
@@ -170,33 +171,50 @@ void Identify(SCPI_C commands, SCPI_P parameters, Stream& interface) {
 void Set1(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[1] = constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
 void Set2(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[2] =  constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
 void Set3(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[3] = constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
 void Set4(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[4] = constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
 void Set5(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[5] = constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
 void Set6(SCPI_C commands, SCPI_P parameters, Stream& interface) {
   if (parameters.Size() > 0) {
     flows[6] = constrain(String(parameters[0]).toFloat(), 0.0, 3.3);
+    setFlows(flows);
   }
 }
+
+void Measure(){
+  readFlows(read_flows);
+  Serial.print("Flows");
+  for (int i(0); i < 6; ++i) {
+    Serial.print(" "); Serial.print(read_flows[i]);
+  }
+  Serial.println("");
+}
+
+
 
 
 void loop() {
@@ -204,12 +222,4 @@ void loop() {
   
   setFlows(flows);
   
-  readFlows(read_flows);
-  Serial.print("Flows");
-  for (int i(0); i < 6; ++i) {
-    Serial.print(" "); Serial.print(read_flows[i]);
-  }
-  Serial.println("");
-
-  delay(100);
 }
